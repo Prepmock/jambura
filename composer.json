@@ -1,12 +1,12 @@
 {
   "repositories": [
       {
-        "url": "https://github.com/dodul/jambura-core.git",
+        "url": "https://github.com/prepmock/jambura-core.git",
         "type": "vcs"
       }
     ],
   "require": {
-    "dodul/jambura-core": "dev-master",
+    "prepmock/jambura-core": "dev-master",
 	  "filp/whoops": "2.14.4",
 	  "lavary/crunz": "2.3.1"
   }
