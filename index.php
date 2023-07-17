@@ -5,9 +5,15 @@
 include('configurations.php');
 include('autoload.php');
 
-#including mvc files
+#including mvc and data-structure files
 define('JAMBURA_MVC', 'vendor/prepmock/jambura-core/src/mvc');
+define('JAMBURA_DS', 'vendor/prepmock/jambura-core/src/data-structure');
+
 foreach (glob(JAMBURA_MVC . '/*' . EXT) as $filename) {
+    include $filename;
+}
+
+foreach (glob(JAMBURA_DS . '/*' . EXT) as $filename) {
     include $filename;
 }
 
