@@ -9,5 +9,10 @@
     "dodul/jambura-core": "dev-master",
 	  "filp/whoops": "2.14.4",
 	  "lavary/crunz": "2.3.1"
+  },
+  "config": {
+    "platform": {
+      "php": "7.2"
+    }
   }
 }
