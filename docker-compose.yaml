@@ -1,0 +1,46 @@
+version: "3.8"
+services:
+  jambura-php-apache2:
+    container_name: jambura-php-apache2
+    build: .
+    ports:
+      - "${HTTP_PORT}:80"
+    volumes:
+      - ${WORK_DIR}:/var/www/html
+      - ${VIRTUALHOST_CONF}:/etc/apache2/sites-enabled/000-default.conf
+    depends_on:
+      - jambura-db
+    networks:
+      - my-network
+
+  jambura-db:
+    container_name: jambura-db
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ${SQL_DATA_VOLUME}:/var/lib/mysql
+      - ${SQL_CNF_VOLUME}:/etc/my.cnf
+    ports:
+      - "${MYSQL_PORT}:3306"
+    networks:
+      - my-network
+
+  jambura-composer:
+    container_name: jambura-composer
+    image: composer:latest
+    volumes:
+      - ${WORK_DIR}:/var/www/html
+    working_dir: /var/www/html
+    depends_on:
+      - jambura-php-apache2
+    command: ["sh", "-c", "composer install && tail -f /dev/null"]
+    networks:
+      - my-network
+
+networks:
+  my-network:
