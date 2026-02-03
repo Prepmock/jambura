@@ -1,0 +1,42 @@
+#!/bin/bash
+# lab - helper script for jambura Docker dev
+
+CONTAINER_NAME="jambura_web"
+
+function show_help() {
+    echo "Usage: ./lab [command]"
+    echo "Commands:"
+    echo "  bash                Open /bin/bash in the web container"
+    echo "  composer-install    Run composer install in the web container"
+}
+
+# Make sure a command was provided
+if [ $# -lt 1 ]; then
+    show_help
+    exit 1
+fi
+
+COMMAND=$1
+
+case $COMMAND in
+    bash)
+        echo "Opening bash in container $CONTAINER_NAME..."
+        docker exec -it $CONTAINER_NAME /bin/bash
+        ;;
+    composer-install)
+        echo "Running composer install in container $CONTAINER_NAME..."
+        # Use ./composer.phar if exists, otherwise fall back to composer in container
+        docker exec -it $CONTAINER_NAME bash -c '
+            if [ -f ./composer.phar ]; then
+                php ./composer.phar install
+            else
+                composer install
+            fi
+        '
+        ;;
+    *)
+        echo "Unknown command: $COMMAND"
+        show_help
+        exit 1
+        ;;
+esac
